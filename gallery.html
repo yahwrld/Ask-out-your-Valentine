@@ -58,6 +58,50 @@
     </style>
 </head>
 <body>
+ <!-- Audio for background music -->
+<audio id="backgroundMusic" loop>
+  <source src="./music/Malcolm Todd - Chest Pain (Official Visualizer).mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<script>
+  const backgroundMusic = document.getElementById('backgroundMusic');
+
+  // Check if music was playing and continue
+  if (localStorage.getItem('musicPlaying') === 'true') {
+    backgroundMusic.play();
+  }
+
+  // Update state if the user pauses the music
+  backgroundMusic.addEventListener('pause', () => {
+    localStorage.setItem('musicPlaying', 'false');
+  });
+
+  // Music toggle functionality
+  const musicToggleButton = document.createElement('button');
+  musicToggleButton.textContent = '🎵';
+  musicToggleButton.style.position = 'fixed';
+  musicToggleButton.style.top = '20px';
+  musicToggleButton.style.right = '20px';
+  musicToggleButton.style.padding = '10px';
+  musicToggleButton.style.backgroundColor = '#ffcccc';
+  musicToggleButton.style.border = 'none';
+  musicToggleButton.style.borderRadius = '5px';
+  musicToggleButton.style.cursor = 'pointer';
+  document.body.appendChild(musicToggleButton);
+
+  let isPlaying = localStorage.getItem('musicPlaying') === 'true';
+
+  musicToggleButton.addEventListener('click', () => {
+    if (isPlaying) {
+      backgroundMusic.pause();
+    } else {
+      backgroundMusic.play();
+    }
+    isPlaying = !isPlaying;
+    localStorage.setItem('musicPlaying', isPlaying ? 'true' : 'false');
+  });
+</script>
     <div class="container">
         <!-- Slide 1 -->
         <div class="paper image bounce2">
@@ -189,5 +233,75 @@
             const p = new Paper(paper);
         });
     </script>
+    <!-- Hidden Button -->
+<button id="secretButton">Click Me</button>
+
+<!-- Love Letter (Hidden by Default) -->
+<div id="loveLetter" class="hidden">
+  <h2>Hbiba dyali,</h2>
+  <p>
+    Every moment m3ak feels like a dream. Your smile lights up my world, and your laughter is my favorite melody. I cherish every second we spend together, and I can't imagine my life without you. You are my everything, and I love you more than words can express.
+  </p>
+  <p>Forever yours,</p>
+  <p>Hubek Yahya.</p>
+</div>
+
+<style>
+  /* Hidden Button Styles */
+  #secretButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #ffcccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0; /* Initially invisible */
+    transition: opacity 0.3s ease;
+  }
+
+  #secretButton:hover {
+    opacity: 1; /* Visible on hover */
+  }
+
+  /* Love Letter Styles */
+  #loveLetter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none; /* Hidden by default */
+  }
+
+  #loveLetter h2 {
+    margin-top: 0;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+<script>
+  // Show the love letter when the button is clicked
+  const secretButton = document.getElementById('secretButton');
+  const loveLetter = document.getElementById('loveLetter');
+
+  secretButton.addEventListener('click', () => {
+    loveLetter.style.display = 'block';
+  });
+
+  // Hide the love letter when clicking outside of it
+  window.addEventListener('click', (event) => {
+    if (event.target !== secretButton && event.target !== loveLetter) {
+      loveLetter.style.display = 'none';
+    }
+  });
+</script>
 </body>
 </html>

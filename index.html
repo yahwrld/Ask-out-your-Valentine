@@ -26,12 +26,45 @@
   </style>
 </head>
 <body class="gradient-background">
-  <!-- Audio for background music -->
-  <audio id="backgroundMusic" loop>
-    <source src="./music/Malcolm Todd - Chest Pain (Official Visualizer).mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+<!-- Audio for background music -->
+<audio id="backgroundMusic" loop>
+  <source src="./music/Malcolm Todd - Chest Pain (Official Visualizer).mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
+<script>
+  const backgroundMusic = document.getElementById('backgroundMusic');
+
+  // Play music and store the state in localStorage
+  backgroundMusic.play();
+  localStorage.setItem('musicPlaying', 'true');
+
+  // Update state if the user pauses the music
+  backgroundMusic.addEventListener('pause', () => {
+    localStorage.setItem('musicPlaying', 'false');
+  });
+
+  // Music toggle functionality
+  const musicToggleButton = document.getElementById('musicToggleButton');
+  let isPlaying = true;
+
+  musicToggleButton.addEventListener('click', () => {
+    if (isPlaying) {
+      backgroundMusic.pause();
+    } else {
+      backgroundMusic.play();
+    }
+    isPlaying = !isPlaying;
+    localStorage.setItem('musicPlaying', isPlaying ? 'true' : 'false');
+  });
+
+  // Attempt to autoplay music when page loads
+  backgroundMusic.play().then(() => {
+    isPlaying = true;
+  }).catch(error => {
+    console.log("Autoplay was blocked. Click the 🎵 button.");
+  });
+</script>
   <!-- Button to toggle music (small and in top-right) -->
   <button id="musicToggleButton"
     class="absolute top-4 right-4 rounded-full text-sm font-medium hover:bg-blue-400 h-8 min-w-[40px] px-2 py-1 bg-blue-500 text-white">
