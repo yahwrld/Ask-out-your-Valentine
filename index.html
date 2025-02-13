@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentines Day</title>
+  <title>Valentine's Day</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .gradient-background {
-      background: rgb(255, 208, 229);
       background: linear-gradient(180deg, rgba(255, 208, 229, 1) 0%, rgba(255, 232, 242, 1) 36%, rgba(255, 255, 255, 1) 100%);
     }
-
     .bounce2 {
       animation: bounce2 2s ease infinite;
     }
-
     @keyframes bounce2 {
       0%, 20%, 50%, 80%, 100% {
         transform: translateY(0);
@@ -29,35 +26,58 @@
   </style>
 </head>
 <body class="gradient-background">
+  <!-- Audio for background music -->
+  <audio id="backgroundMusic" loop>
+    <source src="./music/Malcolm Todd - Chest Pain (Official Visualizer).mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Button to toggle music (small and in top-right) -->
+  <button id="musicToggleButton"
+    class="absolute top-4 right-4 rounded-full text-sm font-medium hover:bg-blue-400 h-8 min-w-[40px] px-2 py-1 bg-blue-500 text-white">
+    🎵
+  </button>
+
   <div class="flex items-center justify-center h-screen">
     <div class="flex flex-col items-center p-4">
       <img id="imageDisplay" src="./images/image1.gif" alt="Cute kitten with flowers" class="rounded-md h-[300px]" style="object-fit: cover;" />
-      <h2 id="valentineQuestion" class="text-4xl font-bold italic text-[#bd1e59] my-4">Will you be my Valentine?</h2>
+      <h2 id="valentineQuestion" class="text-4xl font-bold italic text-[#bd1e59] my-4">Maissae, Tkoni L'Valentine Dyali?</h2>
       <div class="flex gap-4 pt-[20px] items-center" id="responseButtons">
         <button id="yesButton"
-          class="bounce2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-[20px] font-medium disabled:pointer-events-none disabled:opacity-50 hover:bg-green-400 min-h-12 min-w-[75px] px-4 py-2 bg-green-500 text-white transition">
-          Yes
+          class="bounce2 inline-flex items-center justify-center rounded-md text-[20px] font-medium hover:bg-green-400 min-h-12 min-w-[75px] px-4 py-2 bg-green-500 text-white transition">
+          Ah
         </button>
         <button id="noButton"
-          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-[20px] font-medium transition disabled:pointer-events-none disabled:opacity-50 hover:bg-red-700 h-12 min-w-[75px] w-auto px-4 py-2 bg-red-500 text-white">
-          No
+          class="inline-flex items-center justify-center rounded-md text-[20px] font-medium hover:bg-red-700 h-12 min-w-[75px] px-4 py-2 bg-red-500 text-white transition">
+          La
         </button>
       </div>
+
+      <!-- Button to navigate to the second page (initially hidden) -->
+      <button id="galleryButton"
+        class="mt-8 hidden inline-flex items-center justify-center rounded-md text-[20px] font-medium hover:bg-pink-400 h-12 min-w-[200px] px-4 py-2 bg-pink-500 text-white">
+        Lkenz dyali ❤️
+      </button>
     </div>
   </div>
 
   <script type="module">
     import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+
     const yesButton = document.getElementById('yesButton');
     const noButton = document.getElementById('noButton');
     const imageDisplay = document.getElementById('imageDisplay');
     const valentineQuestion = document.getElementById('valentineQuestion');
     const responseButtons = document.getElementById('responseButtons');
-  
+    const galleryButton = document.getElementById('galleryButton');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicToggleButton = document.getElementById('musicToggleButton');
+
     let noClickCount = 0;
-    let buttonHeight = 48; // Starting height in pixels
+    let buttonHeight = 48;
     let buttonWidth = 80;
-    let fontSize = 20; // Starting font size in pixels
+    let fontSize = 20;
+
     const imagePaths = [
       "./images/image1.gif",
       "./images/image2.gif",
@@ -67,29 +87,53 @@
       "./images/image6.gif",
       "./images/image7.gif"
     ];
-  
+
     noButton.addEventListener('click', function() {
       if (noClickCount < 5) {
         noClickCount++;
         imageDisplay.src = imagePaths[noClickCount];
-        buttonHeight += 35; // Increase height by 5px on each click
+        buttonHeight += 35;
         buttonWidth += 35;
-        fontSize += 25; // Increase font size by 1px on each click
-        yesButton.style.height = `${buttonHeight}px`; // Update button height
+        fontSize += 25;
+        yesButton.style.height = `${buttonHeight}px`;
         yesButton.style.width = `${buttonWidth}px`;
-        yesButton.style.fontSize = `${fontSize}px`; // Update font size
+        yesButton.style.fontSize = `${fontSize}px`;
         if (noClickCount < 6) {
-          noButton.textContent = ["No", "Are you sure?", "Pookie please", "Don't do this to me :(", "You're breaking my heart", "I'm gonna cry..."][noClickCount];
+          noButton.textContent = ["La", "Met2akda?", "Hbiba 3afaak", "Bliiiiz :(", "Khti?", "Anebkiii..."][noClickCount];
         }
       }
     });
-  
+
     yesButton.addEventListener('click', () => {
-      imageDisplay.src = './images/image7.gif'; // Change to image7.gif
-      valentineQuestion.textContent = "Yayyy!! :3"; // Change the question text
-      responseButtons.style.display = 'none'; // Hide both buttons
-      confetti(); // Trigger confetti animation
+      imageDisplay.src = './images/image7.gif';
+      valentineQuestion.textContent = "L3ezz!! :3";
+      responseButtons.style.display = 'none';
+      confetti();
+      galleryButton.style.display = 'inline-flex'; // Show "Lkenz dyali ❤️"
     });
-  </script>  
+
+    // Navigate to the gallery page
+    galleryButton.addEventListener('click', () => {
+      window.location.href = 'gallery.html';
+    });
+
+    // Music toggle functionality
+    let isPlaying = false;
+    musicToggleButton.addEventListener('click', () => {
+      if (isPlaying) {
+        backgroundMusic.pause();
+      } else {
+        backgroundMusic.play().catch(error => console.log("Playback error:", error));
+      }
+      isPlaying = !isPlaying;
+    });
+
+    // Attempt to autoplay music when page loads
+    backgroundMusic.play().then(() => {
+      isPlaying = true;
+    }).catch(error => {
+      console.log("Autoplay was blocked. Click the 🎵 button.");
+    });
+  </script>
 </body>
 </html>

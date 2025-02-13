@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Proposal Day</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(255, 208, 229, 1) 0%, rgba(255, 232, 242, 1) 36%, rgba(255, 255, 255, 1) 100%);
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .paper {
+            position: absolute;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: grab;
+            transform: rotateZ(0deg); /* Initial rotation */
+            width: 200px; /* Fixed width for consistency */
+        }
+
+        .paper.image img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .paper.red {
+            background-color: #ffcccc;
+        }
+
+        .bounce2 {
+            animation: bounce2 2s ease infinite;
+        }
+
+        @keyframes bounce2 {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Slide 1 -->
+        <div class="paper image bounce2">
+            <p>Wanaaari xhal cute.</p>
+            <img src="C:\Users\Irelia\Documents\GitHub\Ask-out-your-Valentine\images\maissae3.jpg" alt="Cute Image">
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="paper red bounce2">
+            <p class="p1">And My Favorite</p>
+            <p class="p2">Person?</p>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="paper bounce2">
+            <p>Dima kankon m3ak katfer7ini!</p>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="paper image bounce2">
+            <p>Ay haja m3ak is special.</p>
+            <img src="C:\Users\Irelia\Documents\GitHub\Ask-out-your-Valentine\images\maissae1.jpg" alt="Special Moment">
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="paper red bounce2">
+            <p>Nti sunshine dyali!</p>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="paper bounce2">
+            <p>kane7ma9 elik.</p>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="paper image bounce2">
+            <p>Nti hiya everything.</p>
+            <img src="C:\Users\Irelia\Documents\GitHub\Ask-out-your-Valentine\images\maissae2.jpg" alt="Everything">
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="paper red bounce2">
+            <p>Katkemlini.</p>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="paper bounce2">
+            <p>Kan9eder every moment with you.</p>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="paper image bounce2">
+            <p>Forever and Always.</p>
+            <img src="C:\Users\Irelia\Documents\GitHub\Ask-out-your-Valentine\images\7na.jpg" alt="Forever">
+        </div>
+    </div>
+
+    <script>
+        let highestZ = 1;
+
+        class Paper {
+            constructor(element) {
+                this.element = element;
+                this.holdingPaper = false;
+                this.mouseTouchX = 0;
+                this.mouseTouchY = 0;
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.prevMouseX = 0;
+                this.prevMouseY = 0;
+                this.velX = 0;
+                this.velY = 0;
+                this.rotation = Math.random() * 30 - 15; // Random rotation between -15 and 15 degrees
+                this.currentPaperX = Math.random() * (window.innerWidth - 200); // Random initial X position
+                this.currentPaperY = Math.random() * (window.innerHeight - 200); // Random initial Y position
+
+                // Apply initial rotation and position
+                this.element.style.transform = `rotateZ(${this.rotation}deg)`;
+                this.element.style.left = `${this.currentPaperX}px`;
+                this.element.style.top = `${this.currentPaperY}px`;
+
+                // Add event listeners
+                this.element.addEventListener('mousedown', (e) => this.onMouseDown(e));
+                window.addEventListener('mouseup', () => this.onMouseUp());
+                window.addEventListener('mousemove', (e) => this.onMouseMove(e));
+            }
+
+            onMouseDown(e) {
+                if (this.holdingPaper) return;
+                this.holdingPaper = true;
+                this.element.style.zIndex = highestZ;
+                highestZ += 1;
+
+                if (e.button === 0) {
+                    this.mouseTouchX = e.clientX;
+                    this.mouseTouchY = e.clientY;
+                    this.prevMouseX = e.clientX;
+                    this.prevMouseY = e.clientY;
+                }
+            }
+
+            onMouseUp() {
+                this.holdingPaper = false;
+            }
+
+            onMouseMove(e) {
+                if (!this.holdingPaper) return;
+
+                this.mouseX = e.clientX;
+                this.mouseY = e.clientY;
+
+                this.velX = this.mouseX - this.prevMouseX;
+                this.velY = this.mouseY - this.prevMouseY;
+
+                this.prevMouseX = this.mouseX;
+                this.prevMouseY = this.mouseY;
+
+                this.currentPaperX += this.velX;
+                this.currentPaperY += this.velY;
+
+                this.element.style.left = `${this.currentPaperX}px`;
+                this.element.style.top = `${this.currentPaperY}px`;
+            }
+        }
+
+        // Initialize all paper elements
+        const papers = Array.from(document.querySelectorAll('.paper'));
+        papers.forEach(paper => {
+            const p = new Paper(paper);
+        });
+    </script>
+</body>
+</html>
